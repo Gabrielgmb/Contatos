@@ -41,19 +41,7 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checagem_login);
 
-      /*  User userPDM= new User();
-        userPDM.setNome("Einstein");
-      // userPDM.setTema_escuro(true);
-        Contato c= new Contato();
-        c.setNome("Newton");
-        c.setNumero("tel:+888888");
-        userPDM.getContatos().add(c);
 
-        Intent intentPDM= new Intent(this, ListaDeContatos_Activity.class);
-        intentPDM.putExtra("usuarioPDM",userPDM);
-        startActivity(intentPDM);
-
-*/
 
         //Existe um usuário padrão logado?
         if(montarObjetoUserSemLogar()){
@@ -76,8 +64,6 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
             edPass = findViewById(R.id.edt_Pass);
 
             //Colocando Underline (Vamos usar esse campo mais na frente com o FireBase)
-            mTextView = findViewById(R.id.tvEsqueceuSenha);
-            mTextView.setPaintFlags(mTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             //Evento de limpar Componente
             edUser.setOnTouchListener(new View.OnTouchListener() {
