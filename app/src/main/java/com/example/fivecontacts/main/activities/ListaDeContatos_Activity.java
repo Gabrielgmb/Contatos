@@ -133,13 +133,12 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
 
             for(int i =0; i < contatos.size(); i++) {
                 Map<String,Object> listItemMap = new HashMap<String,Object>();
-                listItemMap.put("imageId", R.drawable.ic_action_ligar_list);
                 listItemMap.put("contato", contatosNomes[i]);
                 listItemMap.put("abrevs",contatosAbrevs[i]);
                 itemDataList.add(listItemMap);
             }
             SimpleAdapter simpleAdapter = new SimpleAdapter(this,itemDataList,R.layout.list_view_layout_imagem,
-                    new String[]{"imageId","contato","abrevs"},new int[]{R.id.userImage, R.id.userTitle,R.id.userAbrev});
+                    new String[]{"contato","abrevs"},new int[]{R.id.userTitle,R.id.userAbrev});
 
             lv.setAdapter(simpleAdapter);
 

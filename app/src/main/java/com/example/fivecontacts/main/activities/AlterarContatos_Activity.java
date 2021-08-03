@@ -21,13 +21,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.fivecontacts.R;
 import com.example.fivecontacts.main.model.Contato;
 import com.example.fivecontacts.main.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -73,26 +76,35 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         });
     }
 
-    public void salvarContato (Contato w){
+    public boolean salvarContato (Contato w){
         SharedPreferences salvaContatos =
                 getSharedPreferences("contatos",Activity.MODE_PRIVATE);
 
         int num = salvaContatos.getInt("numContatos", 0); //checando quantos contatos já tem
-        SharedPreferences.Editor editor = salvaContatos.edit();
-        try {
-            ByteArrayOutputStream dt = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(dt);
-            dt = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(dt);
-            oos.writeObject(w);
-            String contatoSerializado= dt.toString(StandardCharsets.ISO_8859_1.name());
-            editor.putString("contato"+(num+1), contatoSerializado);
-            editor.putInt("numContatos",num+1);
-        }catch(Exception e){
-            e.printStackTrace();
+
+        if(num<5){
+            SharedPreferences.Editor editor = salvaContatos.edit();
+            try {
+                ByteArrayOutputStream dt = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(dt);
+                dt = new ByteArrayOutputStream();
+                oos = new ObjectOutputStream(dt);
+                oos.writeObject(w);
+                String contatoSerializado= dt.toString(StandardCharsets.ISO_8859_1.name());
+                editor.putString("contato"+(num+1), contatoSerializado);
+                editor.putInt("numContatos",num+1);
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            editor.commit();
+            user.getContatos().add(w);
+            return true;
+        }else{
+            Toast.makeText(this, "NÚMERO MÁXIMO DE CONTATOS EXCEDIDO", Toast.LENGTH_LONG).show();
+            return false;
         }
-        editor.commit();
-        user.getContatos().add(w);
+
     }
 
 
@@ -157,12 +169,12 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
                         Contato c= new Contato();
                         c.setNome(nomesContatos[i]);
                         c.setNumero("tel:+"+telefonesContatos[i]);
-                        salvarContato(c);
-                        Intent intent = new Intent(getApplicationContext(), ListaDeContatos_Activity.class);
-                        intent.putExtra("usuario", user);
-                        startActivity(intent);
-                        finish();
-
+                        if(salvarContato(c)){
+                            Intent intent = new Intent(getApplicationContext(), ListaDeContatos_Activity.class);
+                            intent.putExtra("usuario", user);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 });
             }

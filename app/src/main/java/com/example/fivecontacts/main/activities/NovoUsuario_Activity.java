@@ -125,6 +125,10 @@ public class NovoUsuario_Activity extends AppCompatActivity {
 
                 boolean temaEscuro=swTema.isChecked();
 
+                SharedPreferences contatos = getSharedPreferences("contatos",Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor= contatos.edit();
+                editor.putInt("numContatos",0);
+
                 SharedPreferences salvaUser= getSharedPreferences("usuarioPadrao", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor escritor= salvaUser.edit();
 
@@ -140,6 +144,8 @@ public class NovoUsuario_Activity extends AppCompatActivity {
                 escritor.putBoolean("tema",temaEscuro);
 
                 escritor.commit(); //Salva em Disco
+
+                editor.commit(); //Salva em Disco
 
                 //Salvando o user
 
